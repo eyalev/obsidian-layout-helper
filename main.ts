@@ -131,8 +131,6 @@ export default class LayoutHelperPlugin extends Plugin {
 	}
 
 	equalizePaneWidths() {
-		console.log('Layout Helper: Starting pane width equalization');
-		
 		// Add a small delay to ensure DOM is ready
 		setTimeout(() => {
 			this.performPaneEqualization();
@@ -140,23 +138,16 @@ export default class LayoutHelperPlugin extends Plugin {
 	}
 
 	performPaneEqualization() {
-		console.log('Layout Helper: Starting pane equalization');
-		
 		// Find the main workspace split container (vertical split, not horizontal!)
 		const mainSplit = document.querySelector('.workspace-split.mod-vertical.mod-root');
 		if (!mainSplit) {
-			console.log('Layout Helper: No main vertical split found');
 			return;
 		}
 		
-		console.log('Layout Helper: Found main split:', mainSplit);
-		
 		// Find all child panes (workspace-tabs elements, excluding resize handles)
 		const panes = mainSplit.querySelectorAll(':scope > .workspace-tabs');
-		console.log(`Layout Helper: Found ${panes.length} panes`);
 		
 		if (panes.length <= 1) {
-			console.log('Layout Helper: Not enough panes to equalize');
 			return;
 		}
 		
@@ -166,10 +157,6 @@ export default class LayoutHelperPlugin extends Plugin {
 		
 		// Apply equal flex properties to each pane
 		panes.forEach((pane: HTMLElement, index: number) => {
-			const beforeWidth = pane.getBoundingClientRect().width;
-			
-			console.log(`Layout Helper: Processing pane ${index + 1} with classes: ${pane.className}`);
-			
 			// Set equal flex properties for equal width distribution
 			pane.style.setProperty('flex-grow', '1', 'important');
 			pane.style.setProperty('flex-shrink', '1', 'important');
@@ -178,13 +165,7 @@ export default class LayoutHelperPlugin extends Plugin {
 			
 			// Force reflow
 			pane.offsetWidth;
-			
-			const afterWidth = pane.getBoundingClientRect().width;
-			
-			console.log(`Layout Helper: Pane ${index + 1}: ${beforeWidth}px → ${afterWidth}px`);
 		});
-		
-		console.log('Layout Helper: All panes processed');
 	}
 
 	async loadSettings() {
@@ -196,17 +177,13 @@ export default class LayoutHelperPlugin extends Plugin {
 	}
 
 	savePaneLayout() {
-		console.log('Layout Helper: Saving current pane layout');
-		
 		const mainSplit = document.querySelector('.workspace-split.mod-vertical.mod-root');
 		if (!mainSplit) {
-			console.log('Layout Helper: No main vertical split found');
 			return;
 		}
 		
 		const panes = mainSplit.querySelectorAll(':scope > .workspace-tabs');
 		if (panes.length <= 1) {
-			console.log('Layout Helper: Not enough panes to save');
 			return;
 		}
 		
@@ -230,8 +207,6 @@ export default class LayoutHelperPlugin extends Plugin {
 		this.settings.savedLayouts['default'] = layout;
 		this.saveSettings();
 		
-		console.log('Layout Helper: Layout saved:', layout);
-		
 		// Show notification
 		const notification = document.body.createDiv('notice');
 		notification.setText('Pane layout saved!');
@@ -239,12 +214,8 @@ export default class LayoutHelperPlugin extends Plugin {
 	}
 
 	restorePaneLayout() {
-		console.log('Layout Helper: Restoring pane layout');
-		
 		const layout = this.settings.savedLayouts['default'];
 		if (!layout) {
-			console.log('Layout Helper: No saved layout found');
-			
 			// Show notification
 			const notification = document.body.createDiv('notice');
 			notification.setText('No saved layout found!');
@@ -254,13 +225,11 @@ export default class LayoutHelperPlugin extends Plugin {
 		
 		const mainSplit = document.querySelector('.workspace-split.mod-vertical.mod-root');
 		if (!mainSplit) {
-			console.log('Layout Helper: No main vertical split found');
 			return;
 		}
 		
 		const panes = mainSplit.querySelectorAll(':scope > .workspace-tabs');
 		if (panes.length !== layout.panes.length) {
-			console.log(`Layout Helper: Pane count mismatch - current: ${panes.length}, saved: ${layout.panes.length}`);
 			return;
 		}
 		
@@ -280,11 +249,7 @@ export default class LayoutHelperPlugin extends Plugin {
 			pane.style.setProperty('flex-grow', flexGrow, 'important');
 			pane.style.setProperty('flex-shrink', '1', 'important');
 			pane.style.setProperty('flex-basis', '0', 'important');
-			
-			console.log(`Layout Helper: Restored pane ${index + 1} - flex-grow: ${flexGrow}, target width: ${targetWidth}px`);
 		});
-		
-		console.log('Layout Helper: Layout restored');
 		
 		// Show notification
 		const notification = document.body.createDiv('notice');
@@ -293,17 +258,13 @@ export default class LayoutHelperPlugin extends Plugin {
 	}
 
 	saveNamedLayout(name: string) {
-		console.log(`Layout Helper: Saving layout '${name}'`);
-		
 		const mainSplit = document.querySelector('.workspace-split.mod-vertical.mod-root');
 		if (!mainSplit) {
-			console.log('Layout Helper: No main vertical split found');
 			return;
 		}
 		
 		const panes = mainSplit.querySelectorAll(':scope > .workspace-tabs');
 		if (panes.length <= 1) {
-			console.log('Layout Helper: Not enough panes to save');
 			return;
 		}
 		
@@ -327,8 +288,6 @@ export default class LayoutHelperPlugin extends Plugin {
 		this.settings.savedLayouts[name] = layout;
 		this.saveSettings();
 		
-		console.log(`Layout Helper: Layout '${name}' saved:`, layout);
-		
 		// Show notification
 		const notification = document.body.createDiv('notice');
 		notification.setText(`Layout '${name}' saved!`);
@@ -336,12 +295,8 @@ export default class LayoutHelperPlugin extends Plugin {
 	}
 
 	restoreNamedLayout(name: string) {
-		console.log(`Layout Helper: Restoring layout '${name}'`);
-		
 		const layout = this.settings.savedLayouts[name];
 		if (!layout) {
-			console.log(`Layout Helper: No layout '${name}' found`);
-			
 			// Show notification
 			const notification = document.body.createDiv('notice');
 			notification.setText(`Layout '${name}' not found!`);
@@ -351,13 +306,11 @@ export default class LayoutHelperPlugin extends Plugin {
 		
 		const mainSplit = document.querySelector('.workspace-split.mod-vertical.mod-root');
 		if (!mainSplit) {
-			console.log('Layout Helper: No main vertical split found');
 			return;
 		}
 		
 		const panes = mainSplit.querySelectorAll(':scope > .workspace-tabs');
 		if (panes.length !== layout.panes.length) {
-			console.log(`Layout Helper: Pane count mismatch - current: ${panes.length}, saved: ${layout.panes.length}`);
 			return;
 		}
 		
@@ -377,11 +330,7 @@ export default class LayoutHelperPlugin extends Plugin {
 			pane.style.setProperty('flex-grow', flexGrow, 'important');
 			pane.style.setProperty('flex-shrink', '1', 'important');
 			pane.style.setProperty('flex-basis', '0', 'important');
-			
-			console.log(`Layout Helper: Restored pane ${index + 1} - flex-grow: ${flexGrow}, target width: ${targetWidth}px`);
 		});
-		
-		console.log(`Layout Helper: Layout '${name}' restored`);
 		
 		// Show notification
 		const notification = document.body.createDiv('notice');
