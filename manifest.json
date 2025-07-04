@@ -1,11 +1,11 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"id": "layout-helper",
+	"name": "Layout Helper",
 	"version": "1.0.0",
-	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"minAppVersion": "1.6.0",
+	"description": "Manage pane layouts in Obsidian: equalize widths, save and restore custom layouts for better workspace organization",
+	"author": "Eyal Levin",
+	"authorUrl": "https://github.com/eyalev",
+	"fundingUrl": "",
 	"isDesktopOnly": false
 }
