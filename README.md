@@ -20,8 +20,8 @@ An Obsidian plugin for managing workspace pane layouts.
 ## Commands
 
 - `Equalize Pane Widths`: Makes all panes equal width
-- `Save Current Pane Layout`: Saves the current layout as default
-- `Restore Pane Layout`: Restores the default saved layout
+- `Save Default Pane Layout`: Saves the current layout as default
+- `Load Default Pane Layout`: Loads the default saved layout
 - `Save Named Layout`: Creates a new named layout
 - `Load Named Layout`: Loads a saved named layout
 - `Manage Layouts`: Opens the layout management interface

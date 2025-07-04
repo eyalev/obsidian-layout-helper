@@ -46,16 +46,16 @@ export default class LayoutHelperPlugin extends Plugin {
 		});
 
 		this.addCommand({
-			id: 'save-pane-layout',
-			name: 'Save Current Pane Layout',
+			id: 'save-default-pane-layout',
+			name: 'Save Default Pane Layout',
 			callback: () => {
 				this.savePaneLayout();
 			}
 		});
 
 		this.addCommand({
-			id: 'restore-pane-layout',
-			name: 'Restore Pane Layout',
+			id: 'load-default-pane-layout',
+			name: 'Load Default Pane Layout',
 			callback: () => {
 				this.restorePaneLayout();
 			}
