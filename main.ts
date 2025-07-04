@@ -8,6 +8,7 @@ interface PaneLayoutSettings {
 	showRestoreButton: boolean;
 	showSaveNamedButton: boolean;
 	showLoadNamedButton: boolean;
+	showManageButton: boolean;
 }
 
 interface PaneLayout {
@@ -27,7 +28,8 @@ const DEFAULT_SETTINGS: PaneLayoutSettings = {
 	showSaveButton: true,
 	showRestoreButton: true,
 	showSaveNamedButton: true,
-	showLoadNamedButton: true
+	showLoadNamedButton: true,
+	showManageButton: true
 };
 
 export default class LayoutHelperPlugin extends Plugin {
@@ -92,19 +94,19 @@ export default class LayoutHelperPlugin extends Plugin {
 		if (!this.settings.showRibbonButtons) return;
 
 		if (this.settings.showEqualizeButton) {
-			this.addRibbonIcon('layout-dashboard', 'Equalize Pane Widths', () => {
+			this.addRibbonIcon('equal', 'Equalize Pane Widths', () => {
 				this.equalizePaneWidths();
 			});
 		}
 
 		if (this.settings.showSaveButton) {
-			this.addRibbonIcon('save', 'Save Pane Layout', () => {
+			this.addRibbonIcon('save', 'Save Default Pane Layout', () => {
 				this.savePaneLayout();
 			});
 		}
 
 		if (this.settings.showRestoreButton) {
-			this.addRibbonIcon('rotate-ccw', 'Restore Pane Layout', () => {
+			this.addRibbonIcon('rotate-ccw', 'Load Default Pane Layout', () => {
 				this.restorePaneLayout();
 			});
 		}
@@ -118,6 +120,12 @@ export default class LayoutHelperPlugin extends Plugin {
 		if (this.settings.showLoadNamedButton) {
 			this.addRibbonIcon('folder-open', 'Load Named Layout', () => {
 				this.openLoadLayoutModal();
+			});
+		}
+
+		if (this.settings.showManageButton) {
+			this.addRibbonIcon('settings', 'Manage Layouts', () => {
+				this.openManageLayoutsModal();
 			});
 		}
 	}
@@ -698,10 +706,11 @@ class PaneLayoutSettingTab extends PluginSettingTab {
 						await this.plugin.saveSettings();
 					}));
 
-			containerEl.createEl('p', { 
-				text: 'Note: Changes to ribbon buttons require reloading the plugin to take effect.',
-				cls: 'setting-item-description'
-			});
+			
 		}
+		containerEl.createEl('p', { 
+			text: 'Note: Changes to ribbon buttons require reloading the plugin to take effect.',
+			cls: 'setting-item-description'
+		});
 	}
 }
