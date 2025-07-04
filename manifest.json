@@ -3,7 +3,7 @@
 	"name": "Layout Helper",
 	"version": "1.0.0",
 	"minAppVersion": "1.6.0",
-	"description": "Manage pane layouts in Obsidian: equalize widths, save and restore custom layouts for better workspace organization",
+	"description": "Manage pane layouts: equalize widths save and restore custom layouts",
 	"author": "Eyal Levin",
 	"authorUrl": "https://github.com/eyalev",
 	"fundingUrl": "",
