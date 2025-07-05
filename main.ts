@@ -152,16 +152,12 @@ export default class LayoutHelperPlugin extends Plugin {
 		}
 		
 		// Set the main container to flex (horizontal direction for side-by-side panes)
-		(mainSplit as HTMLElement).style.setProperty('display', 'flex', 'important');
-		(mainSplit as HTMLElement).style.setProperty('flex-direction', 'row', 'important');
+		(mainSplit as HTMLElement).addClass('layout-helper-equalized');
 		
 		// Apply equal flex properties to each pane
 		panes.forEach((pane: HTMLElement, index: number) => {
 			// Set equal flex properties for equal width distribution
-			pane.style.setProperty('flex-grow', '1', 'important');
-			pane.style.setProperty('flex-shrink', '1', 'important');
-			pane.style.setProperty('flex-basis', '0', 'important');
-			pane.style.setProperty('width', 'auto', 'important');
+			pane.addClass('layout-helper-pane');
 			
 			// Force reflow
 			pane.offsetWidth;
@@ -246,9 +242,9 @@ export default class LayoutHelperPlugin extends Plugin {
 			// Calculate flex-grow based on proportion
 			const flexGrow = (proportion * layout.panes.length).toString();
 			
-			pane.style.setProperty('flex-grow', flexGrow, 'important');
-			pane.style.setProperty('flex-shrink', '1', 'important');
-			pane.style.setProperty('flex-basis', '0', 'important');
+			pane.addClass('layout-helper-pane-restored');
+			pane.style.setProperty('--layout-helper-flex-grow', flexGrow);
+			pane.style.flexGrow = flexGrow;
 		});
 		
 		// Show notification
@@ -327,9 +323,9 @@ export default class LayoutHelperPlugin extends Plugin {
 			// Calculate flex-grow based on proportion
 			const flexGrow = (proportion * layout.panes.length).toString();
 			
-			pane.style.setProperty('flex-grow', flexGrow, 'important');
-			pane.style.setProperty('flex-shrink', '1', 'important');
-			pane.style.setProperty('flex-basis', '0', 'important');
+			pane.addClass('layout-helper-pane-restored');
+			pane.style.setProperty('--layout-helper-flex-grow', flexGrow);
+			pane.style.flexGrow = flexGrow;
 		});
 		
 		// Show notification
@@ -379,13 +375,12 @@ export default class LayoutHelperPlugin extends Plugin {
 		if (mainSplit) {
 			const panes = mainSplit.querySelectorAll(':scope > .workspace-tabs');
 			panes.forEach((pane: HTMLElement) => {
+				pane.removeClass('layout-helper-pane');
+				pane.removeClass('layout-helper-pane-restored');
 				pane.style.removeProperty('flex-grow');
-				pane.style.removeProperty('flex-shrink');
-				pane.style.removeProperty('flex-basis');
-				pane.style.removeProperty('width');
+				pane.style.removeProperty('--layout-helper-flex-grow');
 			});
-			(mainSplit as HTMLElement).style.removeProperty('display');
-			(mainSplit as HTMLElement).style.removeProperty('flex-direction');
+			(mainSplit as HTMLElement).removeClass('layout-helper-equalized');
 		}
 	}
 }
@@ -405,15 +400,11 @@ class SaveLayoutModal extends Modal {
 		const inputContainer = contentEl.createDiv();
 		const nameInput = inputContainer.createEl('input', {
 			type: 'text',
-			placeholder: 'Enter layout name...'
+			placeholder: 'Enter layout name...',
+			cls: 'layout-helper-modal-input'
 		});
-		nameInput.style.width = '100%';
-		nameInput.style.marginBottom = '10px';
 
-		const buttonContainer = contentEl.createDiv({ cls: 'modal-button-container' });
-		buttonContainer.style.display = 'flex';
-		buttonContainer.style.gap = '10px';
-		buttonContainer.style.justifyContent = 'flex-end';
+		const buttonContainer = contentEl.createDiv({ cls: 'layout-helper-modal-button-container' });
 
 		const saveButton = buttonContainer.createEl('button', { text: 'Save', cls: 'mod-cta' });
 		const cancelButton = buttonContainer.createEl('button', { text: 'Cancel' });
@@ -469,19 +460,10 @@ class LoadLayoutModal extends Modal {
 
 		const listContainer = contentEl.createDiv();
 		this.layouts.forEach((layoutName) => {
-			const item = listContainer.createDiv({ cls: 'layout-item' });
-			item.style.display = 'flex';
-			item.style.justifyContent = 'space-between';
-			item.style.alignItems = 'center';
-			item.style.padding = '8px';
-			item.style.border = '1px solid var(--background-modifier-border)';
-			item.style.borderRadius = '4px';
-			item.style.marginBottom = '5px';
-			item.style.cursor = 'pointer';
+			const item = listContainer.createDiv({ cls: 'layout-helper-layout-item layout-helper-layout-item-clickable' });
 
 			const nameSpan = item.createEl('span', { text: layoutName });
-			const loadButton = item.createEl('button', { text: 'Load', cls: 'mod-cta' });
-			loadButton.style.marginLeft = '10px';
+			const loadButton = item.createEl('button', { text: 'Load', cls: 'mod-cta layout-helper-layout-item-load-button' });
 
 			const handleLoad = () => {
 				this.onLoad(layoutName);
@@ -495,8 +477,7 @@ class LoadLayoutModal extends Modal {
 			};
 		});
 
-		const closeButton = contentEl.createEl('button', { text: 'Close' });
-		closeButton.style.marginTop = '10px';
+		const closeButton = contentEl.createEl('button', { text: 'Close', cls: 'layout-helper-close-button' });
 		closeButton.onclick = () => this.close();
 	}
 
@@ -531,19 +512,10 @@ class ManageLayoutsModal extends Modal {
 
 		const listContainer = contentEl.createDiv();
 		this.layouts.forEach((layoutName) => {
-			const item = listContainer.createDiv({ cls: 'layout-item' });
-			item.style.display = 'flex';
-			item.style.justifyContent = 'space-between';
-			item.style.alignItems = 'center';
-			item.style.padding = '8px';
-			item.style.border = '1px solid var(--background-modifier-border)';
-			item.style.borderRadius = '4px';
-			item.style.marginBottom = '5px';
+			const item = listContainer.createDiv({ cls: 'layout-helper-layout-item' });
 
 			const nameSpan = item.createEl('span', { text: layoutName });
-			const buttonContainer = item.createDiv();
-			buttonContainer.style.display = 'flex';
-			buttonContainer.style.gap = '5px';
+			const buttonContainer = item.createDiv({ cls: 'layout-helper-layout-item-button-container' });
 
 			const loadButton = buttonContainer.createEl('button', { text: 'Load', cls: 'mod-cta' });
 			const deleteButton = buttonContainer.createEl('button', { text: 'Delete', cls: 'mod-warning' });
@@ -565,8 +537,7 @@ class ManageLayoutsModal extends Modal {
 			};
 		});
 
-		const closeButton = contentEl.createEl('button', { text: 'Close' });
-		closeButton.style.marginTop = '10px';
+		const closeButton = contentEl.createEl('button', { text: 'Close', cls: 'layout-helper-close-button' });
 		closeButton.onclick = () => this.close();
 	}
 

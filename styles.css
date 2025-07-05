@@ -1,8 +1,57 @@
-/*
+/* Layout Helper Plugin Styles */
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+.layout-helper-equalized {
+    display: flex !important;
+    flex-direction: row !important;
+}
 
-If your plugin does not need CSS, delete this file.
+.layout-helper-pane {
+    flex-grow: 1 !important;
+    flex-shrink: 1 !important;
+    flex-basis: 0 !important;
+    width: auto !important;
+}
 
-*/
+.layout-helper-pane-restored {
+    flex-shrink: 1 !important;
+    flex-basis: 0 !important;
+}
+
+/* Modal Styles */
+.layout-helper-modal-input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.layout-helper-modal-button-container {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.layout-helper-layout-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.layout-helper-layout-item-clickable {
+    cursor: pointer;
+}
+
+.layout-helper-layout-item-load-button {
+    margin-left: 10px;
+}
+
+.layout-helper-layout-item-button-container {
+    display: flex;
+    gap: 5px;
+}
+
+.layout-helper-close-button {
+    margin-top: 10px;
+}
